@@ -19,15 +19,17 @@ body {
 	text-decoration: none;
 	text-align: center;
 }
-#blogheader #blogtitle h1, #blogheader #blogtitle h1 a {
-	padding-top: 1.5em;
-	color: #444;
+#blogheader #blogtitle h1 {
 	border-bottom: 0.17em solid #D0D0D0;
+}
+#blogheader #blogtitle h1, #blogheader #blogtitle h1 a {
+	text-decoration: none;
 	font-size: 1.5em;
 	font-weight: bold;
 	margin: 0.8em 0;
 	padding: 0.1em 0;
-	text-decoration: none;
+	padding-top: 1.5em;
+	color: #444;
 }
 #blogheader #mainlinks {
 }
@@ -48,6 +50,8 @@ body {
 	text-shadow: #FFF 0 0 0.5em;
 	color: white;
 	background-color: #66CC00;
+	box-shadow: 0em 0em 1em #66CC00, 1px 1px 5px #66CC00;
+	border-radius: 0.5em;
 }
 
 /***** POSTINGS *****/
