@@ -1,13 +1,11 @@
 @import url(pygments.css);
 body {
 	background-color: #fff;
-	margin: 2em 0.2em;
 	font-family: Lucida Grande, Verdana, Sans-serif;
 	color: #4F5155;
 	line-height: 2em;
 	max-width: 40em;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto 1em auto;
 	text-align: justify;
 	height: 101%;
 }
@@ -26,12 +24,13 @@ body {
 	text-decoration: none;
 	font-size: 1.5em;
 	font-weight: bold;
-	margin: 0.8em 0;
+	margin: 0;
 	padding: 0.1em 0;
-	padding-top: 1.5em;
+	padding-top: 0.5em;
 	color: #444;
 }
-#blogheader #mainlinks {
+#blogheader #mainlinks ul {
+	padding-left: 0;
 }
 #blogheader #mainlinks li {
 	display: inline-block;
@@ -52,6 +51,9 @@ body {
 	background-color: #66CC00;
 	box-shadow: 0em 0em 1em #66CC00, 1px 1px 5px #66CC00;
 	border-radius: 0.5em;
+}
+#blogheader #blogtitle img {
+	width: 35px;
 }
 
 /***** POSTINGS *****/
