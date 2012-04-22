@@ -1,0 +1,146 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+         "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Automatic hyphenation</title>
+    <meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <link media="all" href="/style.css" type="text/css" rel="stylesheet" />
+    <link href="/favicon.ico" rel="shortcut icon" />
+    <link href="/" rel="home" />
+    <link href="/atom/" type="application/atom+xml" rel="alternate" title="Atom-Feed" />
+    <link href="/rss/" type="application/rss+xml" rel="alternate" title="RSS-Feed" />
+</head>
+<body>
+	<div id="blogheader">
+		<div id="mainlinks">
+			<ul>
+				<li><a href="/">blog</a></li>
+				<li><a href="/articles/">articles</a></li>
+				<li><a href="/projects/">projects</a></li>
+				<li><a href="/about/">about</a></li>
+			</ul>
+		</div>
+		<div id="blogtitle">
+
+<div>
+<img src="/img/part0.jpg" alt="" />
+<img src="/img/part1.jpg" alt="" />
+<img src="/img/part2.jpg" alt="" />
+<img src="/img/part3.jpg" alt="" />
+<img src="/img/part4.jpg" alt="" />
+<img src="/img/part5.jpg" alt="" />
+<img src="/img/part6.jpg" alt="" />
+<img src="/img/part7.jpg" alt="" />
+<img src="/img/part8.jpg" alt="" />
+<img src="/img/part9.jpg" alt="" />
+<img src="/img/part10.jpg" alt="" />
+<img src="/img/part11.jpg" alt="" />
+</div>
+
+			<h1>
+				<a href="/" class="blogtitle">sebix</a>
+			</h1>
+		</div>
+	</div>
+    <div id="blogbody">
+        
+    
+        <div class="posting">
+    <div class="postheader">
+        <h1 class="subject">
+            <a href="/2012/automatic-hyphenation/">Automatic hyphenation</a>
+        </h1>
+        <span class="date">15.04.2012, 17:46</span>
+    </div>
+    <div class="postbody">
+        	<h2>Rea&shy;sons for full&nbsp;jus&shy;ti&shy;fi&shy;ca&shy;tion</h2>
+
+	<p>Some weeks ago I began to play around with full jus&shy;ti&shy;fi&shy;ca&shy;tion of texts be&shy;yond <span class="latex">L<sup>a</sup>T<sub>e</sub>X</span>. Fully jus&shy;ti&shy;fied texts are used by pro&shy;fes&shy;sion&shy;al type&shy;set&shy;ters and they can be found in al&shy;most every news&shy;pa&shy;per. Full jus&shy;ti&shy;fi&shy;ca&shy;tion is there nec&shy;es&shy;sary, be&shy;cause oth&shy;er&shy;wise the read&shy;er would loose the ori&shy;en&shy;ta&shy;tion be&shy;tween all the small columns. They also ap&shy;pear more and more in the In&shy;ter&shy;net as it just looks more pro&shy;fes&shy;sion&shy;al and is far eas&shy;i&shy;er to read, in par&shy;tic&shy;u&shy;lar when the para&shy;graph widths are small (think&shy;ing of mo&shy;bile de&shy;vices and multi-columns in&nbsp;<span class="caps">HTML5</span>).</p>
+
+	<h2>Re&shy;spon&shy;sive&nbsp;De&shy;sign</h2>
+
+	<p>There&#8217;s an im&shy;por&shy;tant link to Re&shy;spon&shy;sive Web&shy;de&shy;sign as the jus&shy;ti&shy;fi&shy;ca&shy;tion de&shy;pends es&shy;sen&shy;tial&shy;ly on the dis&shy;play-width. If a fully jus&shy;ti&shy;fied para&shy;graph is hy&shy;phened with the usual hy&shy;phen <code>-</code>, it works only for a spe&shy;cif&shy;ic text/box-width. In Re&shy;spon&shy;sive De&shy;sign, all texts should scale prop&shy;er&shy;ly, so a &#8220;hard hy&shy;phen&#8221; <code>-</code> is to my mind a very bad&nbsp;idea.</p>
+
+	<p>Some time ago a found a web&shy;site of a pro&shy;fes&shy;sion&shy;al mar&shy;ket&shy;ing group which had a short (fully jus&shy;ti&shy;fied) para&shy;graph at the top of their home&shy;page. But they used just a nor&shy;mal hy&shy;phen <code>-</code>, which re&shy;sults in ugly white spaces be&shy;tween the words when zoom&shy;ing in/out. This is of course not a good way to cre&shy;ate jus&shy;ti&shy;fied para&shy;graphs and can re&shy;sult in a bad&nbsp;im&shy;pres&shy;sion!</p>
+
+	<h2>Ty&shy;pog&shy;ra&shy;phy</h2>
+
+	<p>Above I men&shy;tioned al&shy;ready <span class="latex">T<sub>e</sub>X</span>, which has a great (maybe the best?) hy&shy;phen&shy;ation al&shy;go&shy;rithm. Any&shy;way, it&#8217;s the best open one ;-). This al&shy;go&shy;rithm uses syl&shy;la&shy;ble di&shy;vi&shy;sion based on lan&shy;guage-spe&shy;cif&shy;ic pat&shy;terns. Of course there exist many ex&shy;cep&shy;tions to this com&shy;mon rules, but the <span class="latex">T<sub>e</sub>X</span>-al&shy;go&shy;rithm is very well-en&shy;gi&shy;neered and fails very rare (in this cases you can help <span class="latex">T<sub>e</sub>X</span> by adding your own&nbsp;rules).</p>
+
+	<p>A sim&shy;ple hy&shy;phen&shy;ation al&shy;go&shy;rithm with pat&shy;tern-de&shy;tec&shy;tion can be eas&shy;i&shy;ly im&shy;ple&shy;ment&shy;ed, but I only want per&shy;fect so&shy;lu&shy;tions. So, pro&shy;fes&shy;sion&shy;al set&shy;ting pro&shy;grams have their (good) so&shy;lu&shy;tions and take their time to process all the data. So what are the so&shy;lu&shy;tions for the&nbsp;web?</p>
+
+	<h2>So&shy;lu&shy;tions for the&nbsp;Web</h2>
+
+	<p>The prob&shy;lem is that most Brows&shy;er don&#8217;t have syl&shy;la&shy;ble di&shy;vi&shy;sion al&shy;go&shy;rithms im&shy;ple&shy;ment&shy;ed, so the de&shy;vel&shy;op&shy;ers and web&shy;de&shy;sign&shy;ers have to take care about this issue. There exist sev&shy;er&shy;al so&shy;lu&shy;tions which en&shy;able au&shy;to&shy;mat&shy;ic hy&shy;phen&shy;ation on the web. Some are JavaScripts, which gen&shy;er&shy;ate the hy&shy;phen&shy;ation at run-/ren&shy;der-time in the brows&shy;er. In my opin&shy;ion this is the worst idea to solve this prob&shy;lem as JavaScript is re&shy;quired and it may be more in&shy;ef&shy;fi&shy;cient than other so&shy;lu&shy;tions (it has to process the text while ren&shy;dering, which re&shy;sults in longer ren&shy;dering&nbsp;times).</p>
+
+	<p>Oth&shy;ers gen&shy;er&shy;ate the so-called &#8220;soft-hy&shy;phens&#8221; at run- or com&shy;pile-time (on the serv&shy;er by a <span class="caps">CGI</span>-lan&shy;guage or lo&shy;cal&shy;ly by sta&shy;t&shy;ic com&shy;pilers), which are em&shy;bed&shy;ded in the <span class="caps">HTML</span>-source&shy;code by the <code>&#38;shy;</code>-code. These <span class="caps">HTML</span>-Codes are hints for the brows&shy;er and sig&shy;nal them the syl&shy;la&shy;ble di&shy;vi&shy;sions. The Brows&shy;er then knows where a in-word break is pos&shy;si&shy;ble and jus&shy;ti&shy;fies the para&shy;graph per&shy;fect&shy;ly de&shy;pend&shy;ing on the block width. This method is used by <a href="/projects/#acrylamid">acry&shy;lamid</a> via fil&shy;ter and there&shy;fore also en&shy;abled on this home&shy;page. It is the best method for the time being, be&shy;cause it is sup&shy;port&shy;ed by all browsers! The only down&shy;side of the soft hy&shy;phens is, that the text is quite un&shy;read&shy;able in the source code (se&shy;man&shy;tic ex&shy;pres&shy;sions are of course not&nbsp;af&shy;fect&shy;ed).</p>
+
+	<h3><span class="caps">CSS3</span></h3>
+
+	<p>The best news is an up&shy;com&shy;ing fea&shy;ture of <span class="caps">CSS3</span>, called <code>hyphens</code>. It en&shy;ables au&shy;to&shy;mat&shy;ic hy&shy;phen&shy;ation al&shy;go&shy;rithms in the brows&shy;ers, so that they can fi&shy;nal&shy;ly do the work they have to do: dis&shy;play con&shy;tent prop&shy;er&shy;ly. The fea&shy;ture is yet not fully im&shy;ple&shy;ment&shy;ed in every brows&shy;er, so that brows&shy;er-spe&shy;cif&shy;ic prop&shy;er&shy;ties have to be used. Ad&shy;di&shy;tion&shy;al&shy;ly the brows&shy;ers may not sup&shy;port all lan&shy;guages&nbsp;yet.</p>
+
+<pre><code>body {
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -o-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+</code></pre>
+
+	<p>At the time being, the fea&shy;ture is not at all re&shy;li&shy;able im&shy;ple&shy;ment&shy;ed! The best way re&shy;mains adding soft hy&shy;phens until every brows&shy;er has a good hy&shy;phen&shy;ation al&shy;go&shy;rithm. Nev&shy;er&shy;the&shy;less I added this code to my stylesheet, maybe it is help&shy;ful for some&nbsp;ren&shy;der&shy;ings.</p>
+
+	<p>The cur&shy;rent state of art can be test&shy;ed on a spe&shy;cial (but pri&shy;vate!) <a href="http://meyerweb.com/eric/css/tests/css3/show.php?p=hyphens">test-page</a>. The spec&shy;i&shy;fi&shy;ca&shy;tion is &#8211; as usual &#8211; at W3.org in the sec&shy;tion <a href="http://www.w3.org/TR/css3-text/"><span class="caps"><span class="caps">CSS</span></span> Text Level 3</a>.</p>
+    </div>
+    <div class="postfooter">
+        
+        
+            <p>tagged with
+                <a href="/tag/responsive-design/">responsive design</a>,
+                <a href="/tag/browser/">browser</a>,
+                <a href="/tag/css3/">css3</a>
+                    and
+                    
+                <a href="/tag/webdesign/">webdesign</a>
+                
+            </p>
+        
+    </div>
+    <div class="comments"></div>
+</div>
+    
+    
+
+    </div>
+    <div id="blogfooter">
+        
+    
+         <p>
+                hosted by <a href="https://github.com">github</a></br />
+                powerd by <a href="https://github.com/posativ/acrylamid">acrylamid</a> (<a href="https://github.com/sebix/acrylamid">my fork</a>)</br />
+            </p>
+        <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/">
+            <img src="/img/cc.png" alt="by-nc-sa" />
+        </a>
+        
+    
+
+	</div>
+<!-- Piwik --> 
+<script type="text/javascript">
+//	var pkBaseURL = (("https:" == document.location.protocol) ? "https://62.113.209.36/piwik/" : "http://62.113.209.36/piwik/");
+	var pkBaseURL = "http://62.113.209.36/piwik/";
+	document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+	</script><script type="text/javascript">
+	try {
+	var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+	piwikTracker.trackPageView();
+	piwikTracker.enableLinkTracking();
+	} catch( err ) {}
+</script>
+<noscript><p style="display:none"><img src="http://62.113.209.36/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+</body>
+</html>
