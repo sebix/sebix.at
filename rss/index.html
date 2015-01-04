@@ -1,41 +1,97 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>sebix</title>
-        <link>http://sebix.github.com/</link>
+        <link>https://www.sebix.at/</link>
         <description></description>
         <language>e</language>
-        <pubDate>Sun, 15 Apr 2012 16:46:00 GMT</pubDate>
-        <docs>http://sebix.github.com/gallery/rss/</docs>
-        <generator>acrylamid 0.4.2</generator>
+        <pubDate>Thu, 02 Jan 2014 16:46:00 GMT</pubDate>
+        <docs>https://www.sebix.at/rss/</docs>
+        <generator>acrylamid 0.7.10</generator>
+        
+            <item>
+                <title>Icinga on Lighttpd and Wheezy</title>
+                <link>https://www.sebix.at/2014/icinga-on-lighttpd-and-wheezy/?pk_campaign=rss</link>
+                <description>	&lt;p&gt;As I haven&amp;#8217;t found any work&amp;shy;ing ex&amp;shy;am&amp;shy;ple con&amp;shy;fig&amp;shy;u&amp;shy;ra&amp;shy;tion for run&amp;shy;ning icin&amp;shy;ga on a sub do&amp;shy;main with lighttpd, I will here pre&amp;shy;sent my work&amp;shy;ing so&amp;shy;lu&amp;shy;tion.&lt;br /&gt;
+        First of all, we need to in&amp;shy;stall the soft&amp;shy;ware&amp;nbsp;it&amp;shy;self:&lt;/p&gt;
+        
+        &lt;pre&gt;
+          $ apt-get install icinga icinga-doc
+        &lt;/pre&gt;
+        
+        	&lt;p&gt;We cre&amp;shy;ate the file &lt;code&gt;/etc/lighttpd/conf-available/50-icinga.conf&lt;/code&gt; to have a con&amp;shy;fig&amp;shy;u&amp;shy;ra&amp;shy;tion which is easy en- and dis&amp;shy;able:&lt;br /&gt;
+        &lt;pre&gt;&lt;code&gt;&lt;br /&gt;
+        $&lt;span class=&#34;caps&#34;&gt;HTTP&lt;/span&gt;[&amp;#8220;host&amp;#8221;] =~ &amp;#8220;icinga.example.org&amp;#8221; {
+        	auth.backend = &amp;#8220;htdigest&amp;#8221;
+        	auth.backend.htdigest.userfile = &amp;#8220;/etc/lighttpd/icinga.htdigest&amp;#8221;
+        	auth.require = ( &amp;#8220;/&amp;#8221; =&gt; (
+        		&amp;#8220;method&amp;#8221;  =&gt; &amp;#8220;digest&amp;#8221;,
+        		&amp;#8220;realm&amp;#8221;   =&gt; &amp;#8220;icinga&amp;#8221;,
+        		&amp;#8220;require&amp;#8221; =&gt; &amp;#8220;valid-user&amp;#8221; 
+        		)&amp;nbsp;)&lt;/p&gt;
+        
+        	server.document-root = &amp;#8220;/usr/share/icinga/htdocs&amp;#8221;
+        	alias.url += (
+        		&amp;#8220;/cgi-bin/icinga&amp;#8221; =&gt; &amp;#8220;/usr/lib/cgi-bin/icinga&amp;#8221;,
+        		&amp;#8220;/icinga/stylesheets&amp;#8221; =&gt; &amp;#8220;/etc/icinga/stylesheets/&amp;#8221;,
+        		&amp;#8220;/icinga&amp;#8221; =&gt; &amp;#8220;/usr/share/icinga/htdocs&amp;#8221;,
+        		&amp;#8220;/stylesheets&amp;#8221; =&gt; &amp;#8220;/etc/icinga/stylesheets/&amp;#8221;,
+        	)
+        
+        	$&lt;span class=&#34;caps&#34;&gt;HTTP&lt;/span&gt;[&amp;#8220;url&amp;#8221;] =~ &amp;#8220;^/cgi-bin/&amp;#8221; {
+        		dir-listing.activate = &amp;#8220;disable&amp;#8221; 
+        		cgi.assign = (
+        			&amp;#8220;.pl&amp;#8221;  =&gt; &amp;#8220;/usr/bin/perl&amp;#8221;,
+        			&amp;#8220;.cgi&amp;#8221; =&gt; &amp;#8220;&amp;#8221; 
+        		)
+        	}
+        }
+        &lt;/pre&gt;&lt;/code&gt;
+        
+        	&lt;p&gt;Now we can ac&amp;shy;ti&amp;shy;vate the newly cre&amp;shy;at&amp;shy;ed con&amp;shy;fig and two re&amp;shy;quire&amp;shy;ments for Lighty&amp;#8217;s con&amp;shy;fig using:&lt;br /&gt;
+        &lt;pre&gt;
+          $ lighty-enable-mod auth cgi icinga
+        &lt;/pre&gt;&lt;/p&gt;
+        
+        	&lt;p&gt;The &lt;strong&gt;au&amp;shy;then&amp;shy;ti&amp;shy;ca&amp;shy;tion is re&amp;shy;quired by icin&amp;shy;ga&lt;/strong&gt; and it is high&amp;shy;ly en&amp;shy;cour&amp;shy;aged not to use a com&amp;shy;mon pass&amp;shy;word and a com&amp;shy;mon sub do&amp;shy;main. If the web in&amp;shy;ter&amp;shy;face does not de&amp;shy;tect any user name, it will load the web&amp;shy;site, but the ac&amp;shy;cess to the data is re&amp;shy;strict&amp;shy;ed to valid&amp;nbsp;users.&lt;/p&gt;
+        
+        	&lt;p&gt;Now we need to cre&amp;shy;ate the di&amp;shy;gest file, con&amp;shy;tain&amp;shy;ing the user names and pass&amp;shy;word-hash&amp;shy;es. We can there&amp;shy;for use the pro&amp;shy;gram &lt;code&gt;htdigest&lt;/code&gt;, pro&amp;shy;vid&amp;shy;ed by &lt;code&gt;apache2-utils&lt;/code&gt;, which should have been in&amp;shy;stalled as a de&amp;shy;pen&amp;shy;den&amp;shy;cy of icin&amp;shy;ga.&lt;br /&gt;
+        &lt;pre&gt;
+          $ htdigest -c &amp;#34;/etc/lighttpd/icinga.htdigest&amp;#34; icinga icingaadmin
+        &lt;/pre&gt;&lt;/p&gt;
+        
+        	&lt;p&gt;For Icin&amp;shy;ga on Lighttpd using a sub di&amp;shy;rec&amp;shy;to&amp;shy;ry, take a look at &lt;a href=&#34;http://blog.waja.info/2013/11/24/running-icinga-with-lighttpd-on-a-raspberry/&#34;&gt;Cy&amp;shy;conet Blog: Run&amp;shy;ning Icin&amp;shy;ga With Lighttpd on De&amp;shy;bian&amp;nbsp;Wheezy&lt;/a&gt;&lt;/p&gt;</description>
+                <pubDate>Thu, 02 Jan 2014 16:46:00 GMT</pubDate>
+                <guid isPermaLink="false">tag:www.sebix.at,2014-01-02:/2014/icinga-on-lighttpd-and-wheezy-rss</guid>
+            </item>
         
             <item>
                 <title>Automatic hyphenation</title>
-                <link>http://sebix.github.com/gallery/2012/automatic-hyphenation/?pk_campaign=rss</link>
+                <link>https://www.sebix.at/2012/automatic-hyphenation/?pk_campaign=rss</link>
                 <description>	&lt;h3&gt;Rea&amp;shy;sons for full&amp;nbsp;jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion&lt;/h3&gt;
         
-        	&lt;p&gt;Some weeks ago I began to play around with full jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion of texts be&amp;shy;yond &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;L&lt;span style=&#34;text-transform: uppercase; font-size: 70%; margin-left: -0.36em; vertical-align: 0.3em; line-height: 0; margin-right: -0.15em;&#34;&gt;a&lt;/span&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt;. Fully jus&amp;shy;ti&amp;shy;fied texts are used by pro&amp;shy;fes&amp;shy;sion&amp;shy;al type&amp;shy;set&amp;shy;ters and they can be found in al&amp;shy;most every news&amp;shy;pa&amp;shy;per. Full jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion is there nec&amp;shy;es&amp;shy;sary, be&amp;shy;cause oth&amp;shy;er&amp;shy;wise the read&amp;shy;er would loose the ori&amp;shy;en&amp;shy;ta&amp;shy;tion be&amp;shy;tween all the small columns. They also ap&amp;shy;pear more and more in the In&amp;shy;ter&amp;shy;net as it just looks more pro&amp;shy;fes&amp;shy;sion&amp;shy;al and is far eas&amp;shy;i&amp;shy;er to read, in par&amp;shy;tic&amp;shy;u&amp;shy;lar when the para&amp;shy;graph widths are small (think&amp;shy;ing of mo&amp;shy;bile de&amp;shy;vices and multi-columns in&amp;nbsp;&lt;span class=&#34;caps&#34;&gt;HTML5&lt;/span&gt;).&lt;/p&gt;
+        	&lt;p&gt;Some weeks ago I began to play around with full jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion of texts be&amp;shy;yond &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;L&lt;span style=&#34;text-transform: uppercase; font-size: 70%; margin-left: -0.36em; vertical-align: 0.3em; line-height: 0; margin-right: -0.15em;&#34;&gt;a&lt;/span&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt;. Fully jus&amp;shy;ti&amp;shy;fied texts are used by pro&amp;shy;fes&amp;shy;sion&amp;shy;al type&amp;shy;set&amp;shy;ters and they can be found in al&amp;shy;most every news&amp;shy;pa&amp;shy;per. Full jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion is nec&amp;shy;es&amp;shy;sary there, be&amp;shy;cause oth&amp;shy;er&amp;shy;wise the read&amp;shy;er would loose the ori&amp;shy;en&amp;shy;ta&amp;shy;tion be&amp;shy;tween all the small col&amp;shy;umns. They also ap&amp;shy;pear more and more in the In&amp;shy;ter&amp;shy;net as it just looks more pro&amp;shy;fes&amp;shy;sion&amp;shy;al and is far eas&amp;shy;i&amp;shy;er to read, in par&amp;shy;tic&amp;shy;u&amp;shy;lar when the para&amp;shy;graph widths are small. This is the case on mo&amp;shy;bile de&amp;shy;vices and in multi-col&amp;shy;umn-lay&amp;shy;outs using &lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;HTML&lt;/span&gt;&lt;/span&gt;5.&lt;/p&gt;
         
         	&lt;h3&gt;Re&amp;shy;spon&amp;shy;sive&amp;nbsp;De&amp;shy;sign&lt;/h3&gt;
         
-        	&lt;p&gt;There&amp;#8217;s an im&amp;shy;por&amp;shy;tant link to Re&amp;shy;spon&amp;shy;sive Web&amp;shy;de&amp;shy;sign as the jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion de&amp;shy;pends es&amp;shy;sen&amp;shy;tial&amp;shy;ly on the dis&amp;shy;play-width. If a fully jus&amp;shy;ti&amp;shy;fied para&amp;shy;graph is hy&amp;shy;phened with the usual hy&amp;shy;phen &lt;code&gt;-&lt;/code&gt;, it works only for a spe&amp;shy;cif&amp;shy;ic text/box-width. In Re&amp;shy;spon&amp;shy;sive De&amp;shy;sign, all texts should scale prop&amp;shy;er&amp;shy;ly, so a &amp;#8220;hard hy&amp;shy;phen&amp;#8221; &lt;code&gt;-&lt;/code&gt; is to my mind a very bad&amp;nbsp;idea.&lt;/p&gt;
+        	&lt;p&gt;There&amp;#8217;s an im&amp;shy;por&amp;shy;tant link to Re&amp;shy;spon&amp;shy;sive Web&amp;shy;de&amp;shy;sign as the jus&amp;shy;ti&amp;shy;fi&amp;shy;ca&amp;shy;tion de&amp;shy;pends es&amp;shy;sen&amp;shy;tial&amp;shy;ly on the dis&amp;shy;play-width. If a fully jus&amp;shy;ti&amp;shy;fied para&amp;shy;graph is hy&amp;shy;phened with the usual hy&amp;shy;phen &lt;code&gt;-&lt;/code&gt;, it works only for a spe&amp;shy;cif&amp;shy;ic text/box-width and usu&amp;shy;al&amp;shy;ly fails with slight&amp;shy;ly changed ren&amp;shy;der&amp;shy;ing con&amp;shy;di&amp;shy;tions. Not only in Re&amp;shy;spon&amp;shy;sive De&amp;shy;sign, it is ex&amp;shy;pect&amp;shy;ed that all texts are scal&amp;shy;ing prop&amp;shy;er&amp;shy;ly and are dis&amp;shy;played in a read&amp;shy;able and con&amp;shy;sis&amp;shy;tent fash&amp;shy;ion, so a &amp;#8220;hard hy&amp;shy;phen&amp;#8221; &lt;code&gt;-&lt;/code&gt; is a very bad&amp;nbsp;idea.&lt;/p&gt;
         
         	&lt;p&gt;Some time ago a found a web&amp;shy;site of a pro&amp;shy;fes&amp;shy;sion&amp;shy;al mar&amp;shy;ket&amp;shy;ing group which had a short (fully jus&amp;shy;ti&amp;shy;fied) para&amp;shy;graph at the top of their home&amp;shy;page. But they used just a nor&amp;shy;mal hy&amp;shy;phen &lt;code&gt;-&lt;/code&gt;, which re&amp;shy;sults in ugly white spaces be&amp;shy;tween the words when zoom&amp;shy;ing in/out. This is of course not a good way to cre&amp;shy;ate jus&amp;shy;ti&amp;shy;fied para&amp;shy;graphs and can re&amp;shy;sult in a bad&amp;nbsp;im&amp;shy;pres&amp;shy;sion!&lt;/p&gt;
         
         	&lt;h3&gt;Ty&amp;shy;pog&amp;shy;ra&amp;shy;phy&lt;/h3&gt;
         
-        	&lt;p&gt;Above I men&amp;shy;tioned al&amp;shy;ready &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt;, which has a great (maybe the best?) hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithm. Any&amp;shy;way, it&amp;#8217;s the best open one ;-). This al&amp;shy;go&amp;shy;rithm uses syl&amp;shy;la&amp;shy;ble di&amp;shy;vi&amp;shy;sion based on lan&amp;shy;guage-spe&amp;shy;cif&amp;shy;ic pat&amp;shy;terns. Of course there exist many ex&amp;shy;cep&amp;shy;tions to this com&amp;shy;mon rules, but the &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt;-al&amp;shy;go&amp;shy;rithm is very well-en&amp;shy;gi&amp;shy;neered and fails very rare (in this cases you can help &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt; by adding your own&amp;nbsp;rules).&lt;/p&gt;
+        	&lt;p&gt;Above I men&amp;shy;tioned al&amp;shy;ready &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt;, which has a great (maybe the best?) hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithm. Any&amp;shy;way, it&amp;#8217;s the best open one ;-). This al&amp;shy;go&amp;shy;rithm uses syl&amp;shy;la&amp;shy;ble di&amp;shy;vi&amp;shy;sion based on lan&amp;shy;guage-spe&amp;shy;cif&amp;shy;ic pat&amp;shy;terns. Of course there exist many ex&amp;shy;cep&amp;shy;tions to this com&amp;shy;mon rules, but the &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt;-al&amp;shy;go&amp;shy;rithm is very well-en&amp;shy;gi&amp;shy;neered and fails very rarely under spe&amp;shy;cial and un&amp;shy;pre&amp;shy;dictable cases (in these cases you can help &lt;span style=&#34;font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;&#34;&gt;T&lt;span style=&#34;text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;&#34;&gt;e&lt;/span&gt;X&lt;/span&gt; by adding your own&amp;nbsp;rules).&lt;/p&gt;
         
         	&lt;p&gt;A sim&amp;shy;ple hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithm with pat&amp;shy;tern-de&amp;shy;tec&amp;shy;tion can be eas&amp;shy;i&amp;shy;ly im&amp;shy;ple&amp;shy;ment&amp;shy;ed, but I only want per&amp;shy;fect so&amp;shy;lu&amp;shy;tions. So, pro&amp;shy;fes&amp;shy;sion&amp;shy;al set&amp;shy;ting pro&amp;shy;grams have their (good) so&amp;shy;lu&amp;shy;tions and take their time to process all the data. So what are the so&amp;shy;lu&amp;shy;tions for the&amp;nbsp;web?&lt;/p&gt;
         
         	&lt;h3&gt;So&amp;shy;lu&amp;shy;tions for the&amp;nbsp;Web&lt;/h3&gt;
         
-        	&lt;p&gt;The prob&amp;shy;lem is that most Brows&amp;shy;er don&amp;#8217;t have syl&amp;shy;la&amp;shy;ble di&amp;shy;vi&amp;shy;sion al&amp;shy;go&amp;shy;rithms im&amp;shy;ple&amp;shy;ment&amp;shy;ed, so the de&amp;shy;vel&amp;shy;op&amp;shy;ers and web&amp;shy;de&amp;shy;sign&amp;shy;ers have to take care about this issue. There exist sev&amp;shy;er&amp;shy;al so&amp;shy;lu&amp;shy;tions which en&amp;shy;able au&amp;shy;to&amp;shy;mat&amp;shy;ic hy&amp;shy;phen&amp;shy;ation on the web. Some are JavaScripts, which gen&amp;shy;er&amp;shy;ate the hy&amp;shy;phen&amp;shy;ation at run-/ren&amp;shy;der-time in the brows&amp;shy;er. In my opin&amp;shy;ion this is the worst idea to solve this prob&amp;shy;lem as JavaScript is re&amp;shy;quired and it may be more in&amp;shy;ef&amp;shy;fi&amp;shy;cient than other so&amp;shy;lu&amp;shy;tions (it has to process the text while ren&amp;shy;dering, which re&amp;shy;sults in longer ren&amp;shy;dering&amp;nbsp;times).&lt;/p&gt;
+        	&lt;p&gt;The prob&amp;shy;lem is that most Brows&amp;shy;er don&amp;#8217;t have syl&amp;shy;la&amp;shy;ble di&amp;shy;vi&amp;shy;sion al&amp;shy;go&amp;shy;rithms im&amp;shy;ple&amp;shy;ment&amp;shy;ed, so the de&amp;shy;vel&amp;shy;op&amp;shy;ers and web de&amp;shy;sign&amp;shy;ers have to take care about this issue. There exist sev&amp;shy;er&amp;shy;al so&amp;shy;lu&amp;shy;tions which en&amp;shy;able au&amp;shy;to&amp;shy;mat&amp;shy;ic hy&amp;shy;phen&amp;shy;ation on the web. Some are im&amp;shy;ple&amp;shy;ment&amp;shy;ed in JavaScript, which gen&amp;shy;er&amp;shy;ate the hy&amp;shy;phen&amp;shy;ation at run-/ren&amp;shy;der-time in the brows&amp;shy;er. In my opin&amp;shy;ion this is the worst idea to solve this prob&amp;shy;lem, as JavaScript is re&amp;shy;quired and the hy&amp;shy;phen&amp;shy;ation is done for every ren&amp;shy;dering and every client (re&amp;shy;sult&amp;shy;ing in longer ren&amp;shy;dering times), thus it is more in&amp;shy;ef&amp;shy;fi&amp;shy;cient than other&amp;nbsp;so&amp;shy;lu&amp;shy;tions.&lt;/p&gt;
         
-        	&lt;p&gt;Oth&amp;shy;ers gen&amp;shy;er&amp;shy;ate the so-called &amp;#8220;soft-hy&amp;shy;phens&amp;#8221; at run- or com&amp;shy;pile-time (on the serv&amp;shy;er by a &lt;span class=&#34;caps&#34;&gt;CGI&lt;/span&gt;-lan&amp;shy;guage or lo&amp;shy;cal&amp;shy;ly by sta&amp;shy;t&amp;shy;ic com&amp;shy;pil&amp;shy;ers), which are em&amp;shy;bed&amp;shy;ded in the &lt;span class=&#34;caps&#34;&gt;HTML&lt;/span&gt;-source&amp;shy;code by the &lt;code&gt;&amp;#38;shy;&lt;/code&gt;-code. These &lt;span class=&#34;caps&#34;&gt;HTML&lt;/span&gt;-Codes are hints for the brows&amp;shy;er and sig&amp;shy;nal them the syl&amp;shy;la&amp;shy;ble di&amp;shy;vi&amp;shy;sions. The Brows&amp;shy;er then knows where a in-word break is pos&amp;shy;si&amp;shy;ble and jus&amp;shy;ti&amp;shy;fies the para&amp;shy;graph per&amp;shy;fect&amp;shy;ly de&amp;shy;pend&amp;shy;ing on the block width. This method is used by &lt;a href=&#34;/projects/#acrylamid&#34;&gt;acry&amp;shy;lamid&lt;/a&gt; via fil&amp;shy;ter and there&amp;shy;fore also en&amp;shy;abled on this home&amp;shy;page. It is the best method for the time being, be&amp;shy;cause it is sup&amp;shy;port&amp;shy;ed by all browsers! The only down&amp;shy;side of the soft hy&amp;shy;phens is, that the text is quite un&amp;shy;read&amp;shy;able in the source code (se&amp;shy;man&amp;shy;tic ex&amp;shy;pres&amp;shy;sions are of course not&amp;nbsp;af&amp;shy;fect&amp;shy;ed).&lt;/p&gt;
+        	&lt;p&gt;Oth&amp;shy;ers gen&amp;shy;er&amp;shy;ate the so-called &amp;#8220;soft-hy&amp;shy;phens&amp;#8221; at run- or com&amp;shy;pile-time (on the serv&amp;shy;er by a &lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;CGI&lt;/span&gt;&lt;/span&gt;-lan&amp;shy;guage or lo&amp;shy;cal&amp;shy;ly by sta&amp;shy;t&amp;shy;ic com&amp;shy;pil&amp;shy;ers), which are em&amp;shy;bed&amp;shy;ded in the &lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;HTML&lt;/span&gt;&lt;/span&gt;-source&amp;shy;code by the &lt;code&gt;&amp;amp;shy;&lt;/code&gt;-code. These &lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;HTML&lt;/span&gt;&lt;/span&gt;-Codes are hints for the brows&amp;shy;er and sig&amp;shy;nal them the pos&amp;shy;si&amp;shy;ble syl&amp;shy;la&amp;shy;ble di&amp;shy;vi&amp;shy;sions. The Brows&amp;shy;er then knows where an in-word break is pos&amp;shy;si&amp;shy;ble and jus&amp;shy;ti&amp;shy;fies the para&amp;shy;graph per&amp;shy;fect&amp;shy;ly de&amp;shy;pend&amp;shy;ing on the block width. This method is used by &lt;a href=&#34;https://www.sebix.at/projects/#acrylamid&#34;&gt;acry&amp;shy;lamid&lt;/a&gt; via a fil&amp;shy;ter and there&amp;shy;fore also en&amp;shy;abled on this home&amp;shy;page. It is the best method for the time being, be&amp;shy;cause it is sup&amp;shy;port&amp;shy;ed by all browsers! The only down&amp;shy;side of the soft hy&amp;shy;phens is, that the text is quite un&amp;shy;read&amp;shy;able in the source code (se&amp;shy;man&amp;shy;tic ex&amp;shy;pres&amp;shy;sions are of course not&amp;nbsp;af&amp;shy;fect&amp;shy;ed).&lt;/p&gt;
         
-        	&lt;h4&gt;&lt;span class=&#34;caps&#34;&gt;CSS3&lt;/span&gt;&lt;/h4&gt;
+        	&lt;h4&gt;&lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;CSS&lt;/span&gt;&lt;/span&gt;3&lt;/h4&gt;
         
-        	&lt;p&gt;The best news is an up&amp;shy;com&amp;shy;ing fea&amp;shy;ture of &lt;span class=&#34;caps&#34;&gt;CSS3&lt;/span&gt;, called &lt;code&gt;hyphens&lt;/code&gt;. It en&amp;shy;ables au&amp;shy;to&amp;shy;mat&amp;shy;ic hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithms in the brows&amp;shy;ers, so that they can fi&amp;shy;nal&amp;shy;ly do the work they have to do: dis&amp;shy;play con&amp;shy;tent prop&amp;shy;er&amp;shy;ly. The fea&amp;shy;ture is yet not fully im&amp;shy;ple&amp;shy;ment&amp;shy;ed in every brows&amp;shy;er, so that brows&amp;shy;er-spe&amp;shy;cif&amp;shy;ic prop&amp;shy;er&amp;shy;ties have to be used. Ad&amp;shy;di&amp;shy;tion&amp;shy;al&amp;shy;ly the brows&amp;shy;ers may not sup&amp;shy;port all lan&amp;shy;guages&amp;nbsp;yet.&lt;/p&gt;
+        	&lt;p&gt;The best news is an up&amp;shy;com&amp;shy;ing fea&amp;shy;ture of &lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;CSS&lt;/span&gt;&lt;/span&gt;3, called &lt;code&gt;hyphens&lt;/code&gt;. It en&amp;shy;ables au&amp;shy;to&amp;shy;mat&amp;shy;ic hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithms in the brows&amp;shy;ers, so that they can fi&amp;shy;nal&amp;shy;ly do the work they have to do: dis&amp;shy;play con&amp;shy;tent prop&amp;shy;er&amp;shy;ly. The fea&amp;shy;ture is yet not fully im&amp;shy;ple&amp;shy;ment&amp;shy;ed in every brows&amp;shy;er, so that brows&amp;shy;er-spe&amp;shy;cif&amp;shy;ic prop&amp;shy;er&amp;shy;ties have to be used. Ad&amp;shy;di&amp;shy;tion&amp;shy;al&amp;shy;ly the brows&amp;shy;ers may not sup&amp;shy;port all lan&amp;shy;guages&amp;nbsp;yet.&lt;/p&gt;
         
         &lt;pre&gt;&lt;code&gt;body {
           -moz-hyphens: auto;
@@ -46,44 +102,44 @@
         }
         &lt;/code&gt;&lt;/pre&gt;
         
-        	&lt;p&gt;At the time being, the fea&amp;shy;ture is not at all re&amp;shy;li&amp;shy;able im&amp;shy;ple&amp;shy;ment&amp;shy;ed! The best way re&amp;shy;mains adding soft hy&amp;shy;phens until every brows&amp;shy;er has a good hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithm. Nev&amp;shy;er&amp;shy;the&amp;shy;less I added this code to my stylesheet, maybe it is help&amp;shy;ful for some&amp;nbsp;ren&amp;shy;der&amp;shy;ings.&lt;/p&gt;
+        	&lt;p&gt;At the time being, the fea&amp;shy;ture is not at all re&amp;shy;li&amp;shy;ably im&amp;shy;ple&amp;shy;ment&amp;shy;ed! The best way re&amp;shy;mains adding soft hy&amp;shy;phens until every brows&amp;shy;er has a good hy&amp;shy;phen&amp;shy;ation al&amp;shy;go&amp;shy;rithm. Nev&amp;shy;er&amp;shy;the&amp;shy;less I added this code to my stylesheet, maybe it is help&amp;shy;ful for some&amp;nbsp;ren&amp;shy;der&amp;shy;ings.&lt;/p&gt;
         
-        	&lt;p&gt;The cur&amp;shy;rent state of art can be test&amp;shy;ed on a spe&amp;shy;cial (but pri&amp;shy;vate!) &lt;a href=&#34;http://meyerweb.com/eric/css/tests/css3/show.php?p=hyphens&#34;&gt;test-page&lt;/a&gt;. The spec&amp;shy;i&amp;shy;fi&amp;shy;ca&amp;shy;tion is &amp;#8211; as usual &amp;#8211; at W3.org in the sec&amp;shy;tion &lt;a href=&#34;http://www.w3.org/TR/css3-text/&#34;&gt;&lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;CSS&lt;/span&gt;&lt;/span&gt; Text Level 3&lt;/a&gt;.&lt;/p&gt;</description>
+        	&lt;p&gt;The cur&amp;shy;rent state of art can be test&amp;shy;ed on a pri&amp;shy;vate &lt;a href=&#34;http://meyerweb.com/eric/css/tests/css3/show.php?p=hyphens&#34;&gt;test-page&lt;/a&gt;. The spec&amp;shy;i&amp;shy;fi&amp;shy;ca&amp;shy;tion is &amp;#8211; as usual &amp;#8211; at W3.org in the sec&amp;shy;tion &lt;a href=&#34;http://www.w3.org/TR/css3-text/&#34;&gt;&lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;CSS&lt;/span&gt;&lt;/span&gt; Text Level 3&lt;/a&gt;.&lt;/p&gt;</description>
                 <pubDate>Sun, 15 Apr 2012 16:46:00 GMT</pubDate>
-                <guid isPermaLink="false">tag:sebix.github.com,2012-04-15:/gallery/2012/automatic-hyphenation-rss</guid>
+                <guid isPermaLink="false">tag:www.sebix.at,2012-04-15:/2012/automatic-hyphenation-rss</guid>
             </item>
         
             <item>
                 <title>The Particle Zoo of Modern Physics</title>
-                <link>http://sebix.github.com/particle-zoo/?pk_campaign=rss</link>
+                <link>https://www.sebix.at/particle-zoo/?pk_campaign=rss</link>
                 <description>	&lt;h3&gt;Get&amp;nbsp;it!&lt;/h3&gt;
         
         	&lt;p&gt;Click on image above or&amp;nbsp;choose:&lt;/p&gt;
         
         	&lt;ul&gt;
-        		&lt;li&gt;Down&amp;shy;load cur&amp;shy;rent &lt;a href=&#34;http://cloud.github.com/downloads/sebix/particle-zoo/particle-zoo.pdf&#34;&gt;&lt;span class=&#34;caps&#34;&gt;PDF&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-        		&lt;li&gt;Down&amp;shy;load cur&amp;shy;rent &lt;a href=&#34;http://cloud.github.com/downloads/sebix/particle-zoo/particle-zoo.png&#34;&gt;&lt;span class=&#34;caps&#34;&gt;PNG&lt;/span&gt;&lt;/a&gt; (low&amp;nbsp;qual&amp;shy;i&amp;shy;ty!)&lt;/li&gt;
-        		&lt;li&gt;View cur&amp;shy;rent &lt;a href=&#34;https://github.com/sebix/particle-zoo/blob/master/particle-zoo.svg&#34;&gt;&lt;span class=&#34;caps&#34;&gt;SVG&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        		&lt;li&gt;Down&amp;shy;load cur&amp;shy;rent &lt;a href=&#34;http://cloud.github.com/downloads/sebix/particle-zoo/particle-zoo.pdf&#34;&gt;&lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;PDF&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+        		&lt;li&gt;Down&amp;shy;load cur&amp;shy;rent &lt;a href=&#34;http://cloud.github.com/downloads/sebix/particle-zoo/particle-zoo.png&#34;&gt;&lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;PNG&lt;/span&gt;&lt;/span&gt;&lt;/a&gt; (low&amp;nbsp;qual&amp;shy;i&amp;shy;ty!)&lt;/li&gt;
+        		&lt;li&gt;View cur&amp;shy;rent &lt;a href=&#34;https://github.com/sebix/particle-zoo/blob/master/particle-zoo.svg&#34;&gt;&lt;span class=&#34;caps&#34;&gt;&lt;span class=&#34;caps&#34;&gt;SVG&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
         		&lt;li&gt;View &lt;a href=&#34;http://github.com/sebix/particle-zoo/&#34;&gt;Github-Pro&amp;shy;ject&lt;/a&gt;&lt;/li&gt;
         	&lt;/ul&gt;
         
         	&lt;h3&gt;The overview has gone&amp;#8230; and&amp;nbsp;reap&amp;shy;pears!&lt;/h3&gt;
         
-        	&lt;p&gt;When be&amp;shy;gin&amp;shy;ning to focus my in&amp;shy;ter&amp;shy;est on mod&amp;shy;ern physics as well as prepar&amp;shy;ing for my the&amp;shy;sis in physics for school I al&amp;shy;ways lost the overview due to the huge mass of in&amp;shy;for&amp;shy;ma&amp;shy;tions. Fur&amp;shy;ther&amp;shy;more I was un&amp;shy;able to find any good ref&amp;shy;er&amp;shy;ence sheet or an overview about all the par&amp;shy;ti&amp;shy;cles of the stan&amp;shy;dard-model of mod&amp;shy;ern phy&amp;shy;ics. So I de&amp;shy;cid&amp;shy;ed in my dis&amp;shy;tress to cre&amp;shy;ate my own one, there&amp;shy;fore I would have to study the sub&amp;shy;ject mat&amp;shy;ter very deep and ad&amp;shy;di&amp;shy;tion&amp;shy;al&amp;shy;ly it could help&amp;nbsp;oth&amp;shy;ers.&lt;/p&gt;
+        	&lt;p&gt;When be&amp;shy;gin&amp;shy;ning to focus my in&amp;shy;ter&amp;shy;est on mod&amp;shy;ern physics as well as prepar&amp;shy;ing for my the&amp;shy;sis in physics for school I al&amp;shy;ways lost the overview due to the huge mass of in&amp;shy;for&amp;shy;ma&amp;shy;tion. Fur&amp;shy;ther&amp;shy;more I was un&amp;shy;able to find any good ref&amp;shy;er&amp;shy;ence sheet or an overview about all the par&amp;shy;ti&amp;shy;cles of the stan&amp;shy;dard-model of mod&amp;shy;ern physics. So I de&amp;shy;cid&amp;shy;ed in my dis&amp;shy;tress to cre&amp;shy;ate my own one, there&amp;shy;fore I would have to study the sub&amp;shy;ject mat&amp;shy;ter very deep and ad&amp;shy;di&amp;shy;tion&amp;shy;al&amp;shy;ly it could help&amp;nbsp;oth&amp;shy;ers.&lt;/p&gt;
         
         	&lt;h3&gt;The tar&amp;shy;get of this&amp;nbsp;cheat&amp;shy;sheet&lt;/h3&gt;
         
-        	&lt;p&gt;My cheat&amp;shy;sheet is meant to help up&amp;shy;com&amp;shy;ing and learn&amp;shy;ing in&amp;shy;ter&amp;shy;est&amp;shy;ed par&amp;shy;ties to ease their start in mod&amp;shy;ern par&amp;shy;ti&amp;shy;cle physics. The Cheat&amp;shy;sheet is nei&amp;shy;ther com&amp;shy;plete nor math&amp;shy;e&amp;shy;mat&amp;shy;i&amp;shy;cal&amp;shy;ly cor&amp;shy;rect, what it is not meant to be&amp;shy;come! The par&amp;shy;ti&amp;shy;cle zoo is in&amp;shy;tend&amp;shy;ed for a kick&amp;shy;start, not as sci&amp;shy;en&amp;shy;tif&amp;shy;ic&amp;nbsp;ref&amp;shy;er&amp;shy;ence.&lt;/p&gt;
+        	&lt;p&gt;My cheat&amp;shy;sheet is meant to help up&amp;shy;com&amp;shy;ing and learn&amp;shy;ing in&amp;shy;ter&amp;shy;est&amp;shy;ed par&amp;shy;ties to ease their start in mod&amp;shy;ern par&amp;shy;ti&amp;shy;cle physics. The Cheat&amp;shy;sheet is nei&amp;shy;ther com&amp;shy;plete nor math&amp;shy;e&amp;shy;mat&amp;shy;i&amp;shy;cal&amp;shy;ly cor&amp;shy;rect, what it is not meant to be&amp;shy;come! The par&amp;shy;ti&amp;shy;cle zoo is in&amp;shy;tend&amp;shy;ed for a kick start, not as sci&amp;shy;en&amp;shy;tif&amp;shy;ic&amp;nbsp;ref&amp;shy;er&amp;shy;ence.&lt;/p&gt;
         
         	&lt;h3&gt;The shown&amp;nbsp;data&lt;/h3&gt;
         
-        	&lt;p&gt;I in&amp;shy;clud&amp;shy;ed only the data I was in&amp;shy;ter&amp;shy;est&amp;shy;ed in, ex&amp;shy;pe&amp;shy;cial&amp;shy;ly basic prop&amp;shy;er&amp;shy;ties like spin, mass, elec&amp;shy;tric charge, life&amp;shy;time and even&amp;shy;tu&amp;shy;al sub&amp;shy;par&amp;shy;ti&amp;shy;cles. Struc&amp;shy;tur&amp;shy;ing the in&amp;shy;di&amp;shy;vid&amp;shy;ual par&amp;shy;ti&amp;shy;cles in their typ&amp;shy;i&amp;shy;cal groups, helped me a lot in un&amp;shy;der&amp;shy;stand&amp;shy;ing all the spe&amp;shy;cial&amp;nbsp;re&amp;shy;la&amp;shy;tion&amp;shy;ships.&lt;/p&gt;
+        	&lt;p&gt;I in&amp;shy;clud&amp;shy;ed only the data I was in&amp;shy;ter&amp;shy;est&amp;shy;ed in, es&amp;shy;pe&amp;shy;cial&amp;shy;ly basic prop&amp;shy;er&amp;shy;ties like spin, mass, elec&amp;shy;tric charge, life&amp;shy;time and even&amp;shy;tu&amp;shy;al sub par&amp;shy;ti&amp;shy;cles. Struc&amp;shy;tur&amp;shy;ing the in&amp;shy;di&amp;shy;vid&amp;shy;ual par&amp;shy;ti&amp;shy;cles in their typ&amp;shy;i&amp;shy;cal groups, helped me a lot in un&amp;shy;der&amp;shy;stand&amp;shy;ing all the spe&amp;shy;cial&amp;nbsp;re&amp;shy;la&amp;shy;tion&amp;shy;ships.&lt;/p&gt;
         
         	&lt;h3&gt;En&amp;shy;hance&amp;nbsp;it!&lt;/h3&gt;
         
         	&lt;p&gt;The Par&amp;shy;ti&amp;shy;cle Zoo has been pub&amp;shy;lished under the Cre&amp;shy;ative-Com&amp;shy;mons Li&amp;shy;cense, per&amp;shy;mit&amp;shy;ting dis&amp;shy;tri&amp;shy;b&amp;shy;u&amp;shy;tion and edit&amp;shy;ing. I also ap&amp;shy;pre&amp;shy;ci&amp;shy;ate any feed&amp;shy;back to make it just per&amp;shy;fect&amp;nbsp;;)&lt;/p&gt;</description>
                 <pubDate>Sat, 14 Apr 2012 12:53:00 GMT</pubDate>
-                <guid isPermaLink="false">tag:sebix.github.com,2012-04-14:/particle-zoo-rss</guid>
+                <guid isPermaLink="false">tag:www.sebix.at,2012-04-14:/particle-zoo-rss</guid>
             </item>
         </channel>
 </rss>

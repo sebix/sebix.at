@@ -56,54 +56,66 @@
         
     
         
-<div class="posting" style="background-image: url('/img/gallery/ganges-400.jpg'); background-position: -50px 0px">
-    
-    <div class="postbody" style="width: 300px; height: 200px; top: 0px; left: -50px">
-    
-    	<div class="postdesc">
-        
-        <h2 class="subject,imageoverlay">
-        
-            <a href="/2012/ganges-delta-during-the-wet-season/">Ganges Delta during the wet season</a>
+<div class="posting">
+    <div class="postheader">
+        <h2 class="subject">
+            <a href="/2014/icinga-on-lighttpd-and-wheezy/">Icinga on Lighttpd and Wheezy</a>
         </h2>
-        
-        </div>
+        <span class="date">2014-01-02, 17:46</span>
     </div>
-</div>
+    <div class="postbody">
+        	<p>As I haven&#8217;t found any work&shy;ing ex&shy;am&shy;ple con&shy;fig&shy;u&shy;ra&shy;tion for run&shy;ning icin&shy;ga on a sub do&shy;main with lighttpd, I will here pre&shy;sent my work&shy;ing so&shy;lu&shy;tion.<br />
+First of all, we need to in&shy;stall the soft&shy;ware&nbsp;it&shy;self:</p>
 
-    
-        
-<div class="posting" style="background-image: url('/img/gallery/river_night-400.jpg'); background-position: -50px 0px">
-    
-    <div class="postbody" style="width: 300px; height: 200px; top: 0px; left: -50px">
-    
-    	<div class="postdesc">
-        
-        <h2 class="subject,imageoverlay">
-        
-            <a href="/2012/river-by-night/">River by Night</a>
-        </h2>
-        
-        </div>
-    </div>
-</div>
+<pre>
+  $ apt-get install icinga icinga-doc
+</pre>
 
-    
-        
-<div class="posting" style="background-image: url('/img/gallery/thai_bridge-400.jpg'); background-position: 0px -50px">
-    
-    <div class="postbody" style="width: 200px; height: 300px; top: -50px; left: 0px">
-    
-    	<div class="postdesc">
-        
-        <h2 class="subject,imageoverlay">
-        
-            <a href="/2012/path-to-the-bridge/">Path to the Bridge</a>
-        </h2>
-        
-        </div>
+	<p>We cre&shy;ate the file <code>/etc/lighttpd/conf-available/50-icinga.conf</code> to have a con&shy;fig&shy;u&shy;ra&shy;tion which is easy en- and dis&shy;able:<br />
+<pre><code><br />
+$<span class="caps">HTTP</span>[&#8220;host&#8221;] =~ &#8220;icinga.example.org&#8221; {
+	auth.backend = &#8220;htdigest&#8221;
+	auth.backend.htdigest.userfile = &#8220;/etc/lighttpd/icinga.htdigest&#8221;
+	auth.require = ( &#8220;/&#8221; => (
+		&#8220;method&#8221;  => &#8220;digest&#8221;,
+		&#8220;realm&#8221;   => &#8220;icinga&#8221;,
+		&#8220;require&#8221; => &#8220;valid-user&#8221; 
+		)&nbsp;)</code>
+
+	server.document-root = &#8220;/usr/share/icinga/htdocs&#8221;
+	alias.url += (
+		&#8220;/cgi-bin/icinga&#8221; => &#8220;/usr/lib/cgi-bin/icinga&#8221;,
+		&#8220;/icinga/stylesheets&#8221; => &#8220;/etc/icinga/stylesheets/&#8221;,
+		&#8220;/icinga&#8221; => &#8220;/usr/share/icinga/htdocs&#8221;,
+		&#8220;/stylesheets&#8221; => &#8220;/etc/icinga/stylesheets/&#8221;,
+	)
+
+	$<span class="caps">HTTP</span>[&#8220;url&#8221;] =~ &#8220;^/cgi-bin/&#8221; {
+		dir-listing.activate = &#8220;disable&#8221; 
+		cgi.assign = (
+			&#8220;.pl&#8221;  => &#8220;/usr/bin/perl&#8221;,
+			&#8220;.cgi&#8221; => &#8220;&#8221; 
+		)
+	}
+}
+</pre></p>
+
+	<p>Now <span>&#8230; <a href="/2014/icinga-on-lighttpd-and-wheezy/" class="continue">continue</a></span></p>
     </div>
-</div>
+    <div class="postfooter">
+        
+        
+            <p>tagged with
+                <a href="/tag/icinga/">icinga</a>,
+                <a href="/tag/monitoring/">monitoring</a>,
+                <a href="/tag/webserver/">webserver</a>
+                    and
+                    
+                <a href="/tag/sysadmin/">sysadmin</a>
+                
+            </p>
+        
+    </div></div>
 
     
     

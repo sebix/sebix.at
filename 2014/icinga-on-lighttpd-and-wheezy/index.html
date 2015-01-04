@@ -3,10 +3,10 @@
          "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>sebix</title>
+    <title>Icinga on Lighttpd and Wheezy</title>
     <meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
     <meta http-equiv="content-language" content="en" />
-
+    <meta name="news_keywords" content="icinga, monitoring, webserver, sysadmin" />
     <link media="screen" href="/css/screen.css" type="text/css" rel="stylesheet" />
     <link media="screen and (max-width: 608px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
     <link media="print" href="/css/print.css" type="text/css" rel="stylesheet" />
@@ -80,7 +80,7 @@ $<span class="caps">HTTP</span>[&#8220;host&#8221;] =~ &#8220;icinga.example.org
 		&#8220;method&#8221;  => &#8220;digest&#8221;,
 		&#8220;realm&#8221;   => &#8220;icinga&#8221;,
 		&#8220;require&#8221; => &#8220;valid-user&#8221; 
-		)&nbsp;)</code>
+		)&nbsp;)</p>
 
 	server.document-root = &#8220;/usr/share/icinga/htdocs&#8221;
 	alias.url += (
@@ -98,9 +98,21 @@ $<span class="caps">HTTP</span>[&#8220;host&#8221;] =~ &#8220;icinga.example.org
 		)
 	}
 }
+</pre></code>
+
+	<p>Now we can ac&shy;ti&shy;vate the newly cre&shy;at&shy;ed con&shy;fig and two re&shy;quire&shy;ments for Lighty&#8217;s con&shy;fig using:<br />
+<pre>
+  $ lighty-enable-mod auth cgi icinga
 </pre></p>
 
-	<p>Now <span>&#8230; <a href="/2014/icinga-on-lighttpd-and-wheezy/" class="continue">continue</a></span></p>
+	<p>The <strong>au&shy;then&shy;ti&shy;ca&shy;tion is re&shy;quired by icin&shy;ga</strong> and it is high&shy;ly en&shy;cour&shy;aged not to use a com&shy;mon pass&shy;word and a com&shy;mon sub do&shy;main. If the web in&shy;ter&shy;face does not de&shy;tect any user name, it will load the web&shy;site, but the ac&shy;cess to the data is re&shy;strict&shy;ed to valid&nbsp;users.</p>
+
+	<p>Now we need to cre&shy;ate the di&shy;gest file, con&shy;tain&shy;ing the user names and pass&shy;word-hash&shy;es. We can there&shy;for use the pro&shy;gram <code>htdigest</code>, pro&shy;vid&shy;ed by <code>apache2-utils</code>, which should have been in&shy;stalled as a de&shy;pen&shy;den&shy;cy of icin&shy;ga.<br />
+<pre>
+  $ htdigest -c &#34;/etc/lighttpd/icinga.htdigest&#34; icinga icingaadmin
+</pre></p>
+
+	<p>For Icin&shy;ga on Lighttpd using a sub di&shy;rec&shy;to&shy;ry, take a look at <a href="http://blog.waja.info/2013/11/24/running-icinga-with-lighttpd-on-a-raspberry/">Cy&shy;conet Blog: Run&shy;ning Icin&shy;ga With Lighttpd on De&shy;bian&nbsp;Wheezy</a></p>
     </div>
     <div class="postfooter">
         
@@ -118,82 +130,7 @@ $<span class="caps">HTTP</span>[&#8220;host&#8221;] =~ &#8220;icinga.example.org
     </div></div>
 
     
-        
-<div class="posting">
-    <div class="postheader">
-        <h2 class="subject">
-            <a href="/2012/automatic-hyphenation/">Automatic hyphenation</a>
-        </h2>
-        <span class="date">2012-04-15, 17:46</span>
-    </div>
-    <div class="postbody">
-        	<h3>Rea&shy;sons for full&nbsp;jus&shy;ti&shy;fi&shy;ca&shy;tion</h3>
-
-	<p>Some weeks ago I began to play around with full jus&shy;ti&shy;fi&shy;ca&shy;tion of texts be&shy;yond <span style="font-family: cmr10, LMRoman10-Regular, Times, serif; letter-spacing: 0.075em;">L<span style="text-transform: uppercase; font-size: 70%; margin-left: -0.36em; vertical-align: 0.3em; line-height: 0; margin-right: -0.15em;">a</span>T<span style="text-transform: uppercase; margin-left: -0.1667em; vertical-align: -0.5ex; line-height: 0; margin-right: -0.125em;">e</span>X</span>. Fully jus&shy;ti&shy;fied texts are used by pro&shy;fes&shy;sion&shy;al type&shy;set&shy;ters and they can be found in al&shy;most every news&shy;pa&shy;per. Full jus&shy;ti&shy;fi&shy;ca&shy;tion is nec&shy;es&shy;sary there, be&shy;cause oth&shy;er&shy;wise the read&shy;er would loose the ori&shy;en&shy;ta&shy;tion be&shy;tween all the small col&shy;umns. They also ap&shy;pear more and more in the In&shy;ter&shy;net as it just looks more pro&shy;fes&shy;sion&shy;al and is far eas&shy;i&shy;er to read, in par&shy;tic&shy;u&shy;lar when the para&shy;graph widths are small. This is the case on mo&shy;bile de&shy;vices and in multi-col&shy;umn-lay&shy;outs using <span class="caps"><span class="caps">HTML</span></span>5.</p>
-
-	<h3>Re&shy;spon&shy;sive&nbsp;De&shy;sign</h3>
-
-	<p>There&#8217;s an im&shy;por&shy;tant link to Re&shy;spon&shy;sive Web&shy;de&shy;sign as <span>&#8230; <a href="/2012/automatic-hyphenation/" class="continue">continue</a></span></p>
-    </div>
-    <div class="postfooter">
-        
-        
-            <p>tagged with
-                <a href="/tag/responsive-design/">responsive design</a>,
-                <a href="/tag/browser/">browser</a>,
-                <a href="/tag/css3/">css3</a>
-                    and
-                    
-                <a href="/tag/webdesign/">webdesign</a>
-                
-            </p>
-        
-    </div></div>
-
     
-        
-<div class="posting">
-    <div class="postheader">
-        <h2 class="subject">
-            <a href="/particle-zoo/">The Particle Zoo of Modern Physics</a>
-        </h2>
-        <span class="date">2012-04-14, 13:53</span>
-    </div>
-    <div class="postbody">
-        	<h3>Get&nbsp;it!</h3>
-
-	<p>Click on image above or&nbsp;choose:</p>
-
-	<ul>
-		<li>Down&shy;load cur&shy;rent <a href="http://cloud.github.com/downloads/sebix/particle-zoo/particle-zoo.pdf"><span class="caps"><span class="caps">PDF</span></span></a></li>
-		<li>Down&shy;load cur&shy;rent <a href="http://cloud.github.com/downloads/sebix/particle-zoo/particle-zoo.png"><span class="caps"><span class="caps">PNG</span></span></a> (low&nbsp;qual&shy;i&shy;ty!)</li>
-		<li>View cur&shy;rent <a href="https://github.com/sebix/particle-zoo/blob/master/particle-zoo.svg"><span class="caps"><span class="caps">SVG</span></span></a></li>
-		<li>View <a href="http://github.com/sebix/particle-zoo/">Github-Pro&shy;ject</a></li>
-	</ul>
-
-	<h3>The overview has gone&#8230; and&nbsp;reap&shy;pears!</h3>
-
-	<p>When be&shy;gin&shy;ning to focus my in&shy;ter&shy;est on mod&shy;ern physics as well as prepar&shy;ing for my the&shy;sis in physics for school I al&shy;ways lost the overview due to the huge mass of in&shy;for&shy;ma&shy;tion. Fur&shy;ther&shy;more I was un&shy;able to find any good ref&shy;er&shy;ence sheet or an overview about all the par&shy;ti&shy;cles of the stan&shy;dard-model of mod&shy;ern physics. So I de&shy;cid&shy;ed in my dis&shy;tress to cre&shy;ate my own one, there&shy;fore I would have to study the sub&shy;ject mat&shy;ter very deep and ad&shy;di&shy;tion&shy;al&shy;ly it could help&nbsp;oth&shy;ers.</p>
-
-	<h3>The tar&shy;get of <span>&#8230; <a href="/particle-zoo/" class="continue">continue</a></span></h3>
-    </div>
-    <div class="postfooter">
-        
-        
-            <p>tagged with
-                <a href="/tag/projects/">projects</a>
-                    and
-                    
-                <a href="/tag/particle-zoo/">particle-zoo</a>
-                
-            </p>
-        
-    </div></div>
-
-    
-    
-        
-        
 
     </div>
     <div id="blogfooter">
